@@ -124,9 +124,9 @@ function showConsequence(choice) {
     
     if (choice === 'truth') {
         content = `
-            <h2 class="consequence-title" style="color: #3498db;">Has revelado la verdad</h2>
+            <h2 class="consequence-title" style="color: #3498db;">Has contado la verdad</h2>
             <p class="consequence-text">
-                Al elegir la verdad, has descubierto que Emecidad no es un medicamento milagroso, 
+                Al elegir contar la verdad, has revelado que Valexidil no es un medicamento milagroso, 
                 sino una herramienta de control mental diseñada para eliminar la capacidad crítica 
                 de las personas.
             </p>
@@ -142,7 +142,7 @@ function showConsequence(choice) {
         `;
     } else {
         content = `
-            <h2 class="consequence-title" style="color: #e74c3c;">Has tomado el medicamento</h2>
+            <h2 class="consequence-title" style="color: #e74c3c;">Has publicitado la pastilla</h2>
             <p class="consequence-text">
                 Sientes una calma absoluta. Todas tus preocupaciones desaparecen. 
                 El mundo parece perfecto ahora.
