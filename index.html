@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Privado - Influencer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen">
+            <div class="login-container">
+                <h1 class="login-title">"Descuento" ;)</h1>
+                <div class="login-form">
+                    <input type="password" id="password-input" placeholder="Contraseña">
+                    <button id="login-button">Entrar</button>
+                </div>
+                <p id="error-message" class="error-message"></p>
+            </div>
+        </div>
+
+        <!-- Blog Screen -->
+        <div id="blog-screen" class="screen hidden">
+            <div class="blog-container">
+                <header class="blog-header">
+                    <h1>Blog Privado</h1>
+                    <p class="subtitle">Solo para verdaderos seguidores</p>
+                </header>
+
+                <div class="blog-content">
+                    <aside class="sidebar">
+                        <nav class="sidebar-nav">
+                            <button class="nav-button active" data-section="news">Noticias encubiertas</button>
+                            <button class="nav-button" data-section="truth">Desvelo la verdad</button>
+                        </nav>
+                    </aside>
+
+                    <main class="main-content">
+                        <!-- News Section -->
+                        <section id="news-section" class="content-section">
+                            <h2>Noticias encubiertas</h2>
+                            <div class="news-list">
+                                <article class="news-item" data-read="false">
+                                    <h3>Emecidad: La revolución de la felicidad</h3>
+                                    <p>Descubre cómo este medicamento prometedor está cambiando vidas, liberando a las personas de toda negatividad y problemas psicológicos. Un estado de tranquilidad absoluta.</p>
+                                    <button class="read-button">Leer más</button>
+                                </article>
+
+                                <article class="news-item" data-read="false">
+                                    <h3>Testimonios reales: "Nunca me sentí mejor"</h3>
+                                    <p>Miles de usuarios reportan niveles de felicidad sin precedentes. "Es como si todas mis preocupaciones hubieran desaparecido mágicamente", cuenta María, usuaria desde hace 3 meses.</p>
+                                    <button class="read-button">Leer más</button>
+                                </article>
+
+                                <article class="news-item" data-read="false">
+                                    <h3>⚠️ ALERTA: Nuevos síntomas secundarios reportados</h3>
+                                    <p>Comienzan a circular informes sobre efectos secundarios preocupantes. Usuarios reportan falta de percepción del peligro, incluyendo incidentes donde personas no reaccionaron ante vehículos en movimiento.</p>
+                                    <button class="read-button">Leer más</button>
+                                </article>
+
+                                <article class="news-item" data-read="false">
+                                    <h3>Investigación: ¿Por qué la gente está muriendo?</h3>
+                                    <p>Expertos alertan sobre un patrón alarmante: la "falta de importancia" ante situaciones de peligro vital. Casos documentados de atropellos por no percibir el riesgo.</p>
+                                    <button class="read-button">Leer más</button>
+                                </article>
+
+                                <article class="news-item" data-read="false">
+                                    <h3>El dilema psicológico detrás de Emecidad</h3>
+                                    <p>¿Vale la pena la felicidad eterna si el precio es perder el instinto de supervivencia? La comunidad médica debate sobre los riesgos de este medicamento revolucionario.</p>
+                                    <button class="read-button">Leer más</button>
+                                </article>
+                            </div>
+                        </section>
+
+                        <!-- Truth Section -->
+                        <section id="truth-section" class="content-section hidden">
+                            <h2>Desvelo la verdad</h2>
+                            <div id="truth-content">
+                                <p id="truth-message" class="truth-message"></p>
+                                <div id="video-container" class="video-container hidden">
+                                    <video id="truth-video" controls>
+                                        <source src="assets/video.mp4" type="video/mp4">
+                                        Tu navegador no soporta video.
+                                    </video>
+                                </div>
+                                <div id="choice-buttons" class="choice-buttons hidden">
+                                    <button class="pill-button blue" id="truth-pill">
+                                        <span class="pill-icon">💊</span>
+                                        Revelar la verdad
+                                    </button>
+                                    <button class="pill-button red" id="medicine-pill">
+                                        <span class="pill-icon">💊</span>
+                                        Tomar el medicamento
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consequence Screen -->
+        <div id="consequence-screen" class="screen hidden">
+            <div class="consequence-container">
+                <div id="consequence-content"></div>
+                <button id="restart-button" class="restart-button">Volver al inicio</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
