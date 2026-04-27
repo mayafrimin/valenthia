@@ -1,5 +1,6 @@
 const CORRECT_PASSWORD = 'conciencia';
 let newsReadCount = 0;
+let newsData = [];
 
 const loginScreen = document.getElementById('login-screen');
 const blogScreen = document.getElementById('blog-screen');
@@ -12,9 +13,7 @@ const errorMessage = document.getElementById('error-message');
 const navButtons = document.querySelectorAll('.nav-button');
 const newsSection = document.getElementById('news-section');
 const truthSection = document.getElementById('truth-section');
-
-const newsItems = document.querySelectorAll('.news-item');
-const readButtons = document.querySelectorAll('.read-button');
+const newsList = document.querySelector('.news-list');
 
 const newsModal = document.getElementById('news-modal');
 const modalTitle = document.getElementById('modal-title');
@@ -32,6 +31,63 @@ const medicinePill = document.getElementById('medicine-pill');
 const consequenceContent = document.getElementById('consequence-content');
 const restartButton = document.getElementById('restart-button');
 
+async function loadNews() {
+    try {
+        const response = await fetch('news.json');
+        newsData = await response.json();
+        renderNews();
+    } catch (error) {
+        console.error('Error al cargar las noticias:', error);
+    }
+}
+
+function renderNews() {
+    newsList.innerHTML = '';
+    newsData.forEach((news, index) => {
+        const article = document.createElement('article');
+        article.className = 'news-item';
+        article.dataset.read = 'false';
+        article.dataset.fullContent = news.fullContent;
+        
+        article.innerHTML = `
+            <h3>${news.title}</h3>
+            <p>${news.summary}</p>
+            <button class="read-button">Leer más</button>
+        `;
+        
+        newsList.appendChild(article);
+    });
+    
+    attachReadButtonListeners();
+}
+
+function attachReadButtonListeners() {
+    const readButtons = document.querySelectorAll('.read-button');
+    readButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const newsItem = e.target.closest('.news-item');
+            if (newsItem) {
+                const title = newsItem.querySelector('h3').textContent;
+                const fullContent = newsItem.dataset.fullContent;
+                
+                modalTitle.textContent = title;
+                modalBody.innerHTML = fullContent.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+                newsModal.classList.remove('hidden');
+                
+                if (newsItem.dataset.read === 'false') {
+                    newsItem.dataset.read = 'true';
+                    newsReadCount++;
+                    button.textContent = 'Leído';
+                    button.disabled = true;
+                    button.style.background = '#27ae60';
+                }
+            }
+        });
+    });
+}
+
+loadNews();
+
 loginButton.addEventListener('click', attemptLogin);
 passwordInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') attemptLogin();
@@ -41,28 +97,6 @@ navButtons.forEach(button => {
     button.addEventListener('click', () => {
         const section = button.dataset.section;
         switchSection(section);
-    });
-});
-
-readButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        const newsItem = e.target.closest('.news-item');
-        if (newsItem) {
-            const title = newsItem.querySelector('h3').textContent;
-            const fullContent = newsItem.dataset.fullContent;
-            
-            modalTitle.textContent = title;
-            modalBody.innerHTML = fullContent.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
-            newsModal.classList.remove('hidden');
-            
-            if (newsItem.dataset.read === 'false') {
-                newsItem.dataset.read = 'true';
-                newsReadCount++;
-                button.textContent = 'Leído';
-                button.disabled = true;
-                button.style.background = '#27ae60';
-            }
-        }
     });
 });
 
@@ -190,13 +224,7 @@ function showConsequence(choice) {
 
 function restartApp() {
     newsReadCount = 0;
-    newsItems.forEach(item => {
-        item.dataset.read = 'false';
-        const button = item.querySelector('.read-button');
-        button.textContent = 'Leer más';
-        button.disabled = false;
-        button.style.background = '#667eea';
-    });
+    renderNews();
     
     passwordInput.value = '';
     errorMessage.textContent = '';
