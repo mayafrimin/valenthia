@@ -17,7 +17,7 @@ webeme_2/
 ## Funcionalidades
 
 - **Login**
-- **Noticias encubiertas**: 5 noticias sobre Valexidir
+- **Noticias encubiertas**: 5 noticias sobre Valenthia
 - **Desvelo la verdad**: Solo accesible después de leer al menos 1 noticia
 - **Elección final**: Dos opciones con consecuencias diferentes
 
