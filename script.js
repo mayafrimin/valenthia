@@ -1,5 +1,6 @@
 const CORRECT_PASSWORD = 'conciencia';
 let newsReadCount = 0;
+let newsData = [];
 
 const loginScreen = document.getElementById('login-screen');
 const blogScreen = document.getElementById('blog-screen');
@@ -12,9 +13,12 @@ const errorMessage = document.getElementById('error-message');
 const navButtons = document.querySelectorAll('.nav-button');
 const newsSection = document.getElementById('news-section');
 const truthSection = document.getElementById('truth-section');
+const newsList = document.querySelector('.news-list');
 
-const newsItems = document.querySelectorAll('.news-item');
-const readButtons = document.querySelectorAll('.read-button');
+const newsModal = document.getElementById('news-modal');
+const modalTitle = document.getElementById('modal-title');
+const modalBody = document.getElementById('modal-body');
+const modalClose = document.querySelector('.modal-close');
 
 const truthMessage = document.getElementById('truth-message');
 const videoContainer = document.getElementById('video-container');
@@ -26,6 +30,62 @@ const medicinePill = document.getElementById('medicine-pill');
 
 const consequenceContent = document.getElementById('consequence-content');
 const restartButton = document.getElementById('restart-button');
+
+async function loadNews() {
+    try {
+        const response = await fetch('news.json');
+        newsData = await response.json();
+        renderNews();
+    } catch (error) {
+        console.error('Error al cargar las noticias:', error);
+    }
+}
+
+function renderNews() {
+    newsList.innerHTML = '';
+    newsData.forEach((news, index) => {
+        const article = document.createElement('article');
+        article.className = 'news-item';
+        article.dataset.read = 'false';
+        article.dataset.fullContent = news.fullContent;
+        
+        article.innerHTML = `
+            <h3>${news.title}</h3>
+            <p>${news.summary}</p>
+            <button class="read-button">Leer más</button>
+        `;
+        
+        newsList.appendChild(article);
+    });
+    
+    attachReadButtonListeners();
+}
+
+function attachReadButtonListeners() {
+    const readButtons = document.querySelectorAll('.read-button');
+    readButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const newsItem = e.target.closest('.news-item');
+            if (newsItem) {
+                const title = newsItem.querySelector('h3').textContent;
+                const fullContent = newsItem.dataset.fullContent;
+                
+                modalTitle.textContent = title;
+                modalBody.innerHTML = fullContent.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+                newsModal.classList.remove('hidden');
+                
+                if (newsItem.dataset.read === 'false') {
+                    newsItem.dataset.read = 'true';
+                    newsReadCount++;
+                    button.textContent = 'Leído';
+                    button.style.background = '#27ae60';
+                }
+            }
+        });
+    });
+}
+
+loadNews();
 
 loginButton.addEventListener('click', attemptLogin);
 passwordInput.addEventListener('keypress', (e) => {
@@ -39,17 +99,14 @@ navButtons.forEach(button => {
     });
 });
 
-readButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        const newsItem = e.target.closest('.news-item');
-        if (newsItem && newsItem.dataset.read === 'false') {
-            newsItem.dataset.read = 'true';
-            newsReadCount++;
-            button.textContent = 'Leído';
-            button.disabled = true;
-            button.style.background = '#27ae60';
-        }
-    });
+modalClose.addEventListener('click', () => {
+    newsModal.classList.add('hidden');
+});
+
+newsModal.addEventListener('click', (e) => {
+    if (e.target === newsModal) {
+        newsModal.classList.add('hidden');
+    }
 });
 
 truthVideo.addEventListener('ended', () => {
@@ -124,9 +181,9 @@ function showConsequence(choice) {
     
     if (choice === 'truth') {
         content = `
-            <h2 class="consequence-title" style="color: #3498db;">Has revelado la verdad</h2>
+            <h2 class="consequence-title" style="color: #3498db;">Has contado la verdad</h2>
             <p class="consequence-text">
-                Al elegir la verdad, has descubierto que Emecidad no es un medicamento milagroso, 
+                Al elegir contar la verdad, has revelado que Valenthia no es un medicamento milagroso, 
                 sino una herramienta de control mental diseñada para eliminar la capacidad crítica 
                 de las personas.
             </p>
@@ -142,7 +199,7 @@ function showConsequence(choice) {
         `;
     } else {
         content = `
-            <h2 class="consequence-title" style="color: #e74c3c;">Has tomado el medicamento</h2>
+            <h2 class="consequence-title" style="color: #e74c3c;">Has publicitado la pastilla</h2>
             <p class="consequence-text">
                 Sientes una calma absoluta. Todas tus preocupaciones desaparecen. 
                 El mundo parece perfecto ahora.
@@ -166,13 +223,7 @@ function showConsequence(choice) {
 
 function restartApp() {
     newsReadCount = 0;
-    newsItems.forEach(item => {
-        item.dataset.read = 'false';
-        const button = item.querySelector('.read-button');
-        button.textContent = 'Leer más';
-        button.disabled = false;
-        button.style.background = '#667eea';
-    });
+    renderNews();
     
     passwordInput.value = '';
     errorMessage.textContent = '';
