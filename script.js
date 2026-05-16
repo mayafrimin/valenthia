@@ -1,14 +1,22 @@
-const PASSWORD_HASH = '03a98f74306972aaa78ab766d29f0a9ffa69c03a5d72b1ac67543efc9bfddaad';
+﻿const PASSWORD_HASH = '03a98f74306972aaa78ab766d29f0a9ffa69c03a5d72b1ac67543efc9bfddaad';
+const REQUIRED_EMOTIONS = ['alegria', 'tristeza', 'miedo', 'rabia', 'amor', 'sorpresa'];
+
 let newsReadCount = 0;
 let newsData = [];
 let videoTimerId = null; // Variable para guardar el ID del timer
+const selectedEmotions = new Set();
 
 const loginScreen = document.getElementById('login-screen');
 const blogScreen = document.getElementById('blog-screen');
 const consequenceScreen = document.getElementById('consequence-screen');
+const loginTitle = document.querySelector('.login-title');
 
+const loginForm = document.getElementById('login-form');
 const passwordInput = document.getElementById('password-input');
 const loginButton = document.getElementById('login-button');
+const captchaContainer = document.getElementById('captcha-container');
+const captchaOptions = document.querySelectorAll('.captcha-option');
+const captchaContinueButton = document.getElementById('captcha-continue-button');
 const errorMessage = document.getElementById('error-message');
 
 const navButtons = document.querySelectorAll('.nav-button');
@@ -23,7 +31,6 @@ const modalClose = document.querySelector('.modal-close');
 
 const truthMessage = document.getElementById('truth-message');
 const videoContainer = document.getElementById('video-container');
-const truthVideo = document.getElementById('truth-video');
 const choiceButtons = document.getElementById('choice-buttons');
 
 const truthPill = document.getElementById('truth-pill');
@@ -44,7 +51,7 @@ async function loadNews() {
 
 function renderNews() {
     newsList.innerHTML = '';
-    newsData.forEach((news, index) => {
+    newsData.forEach((news) => {
         const article = document.createElement('article');
         article.className = 'news-item';
         article.dataset.read = 'false';
@@ -64,56 +71,27 @@ function renderNews() {
 
 function attachReadButtonListeners() {
     const readButtons = document.querySelectorAll('.read-button');
-    readButtons.forEach(button => {
+    readButtons.forEach((button) => {
         button.addEventListener('click', (e) => {
             const newsItem = e.target.closest('.news-item');
-            if (newsItem) {
-                const title = newsItem.querySelector('h3').textContent;
-                const fullContent = newsItem.dataset.fullContent;
-                
-                modalTitle.textContent = title;
-                modalBody.innerHTML = fullContent.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
-                newsModal.classList.remove('hidden');
-                
-                if (newsItem.dataset.read === 'false') {
-                    newsItem.dataset.read = 'true';
-                    newsReadCount++;
-                    button.textContent = 'Leído';
-                    button.style.background = '#27ae60';
-                }
+            if (!newsItem) return;
+
+            const title = newsItem.querySelector('h3').textContent;
+            const fullContent = newsItem.dataset.fullContent;
+
+            modalTitle.textContent = title;
+            modalBody.innerHTML = fullContent.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+            newsModal.classList.remove('hidden');
+
+            if (newsItem.dataset.read === 'false') {
+                newsItem.dataset.read = 'true';
+                newsReadCount++;
+                button.textContent = 'Leído';
+                button.style.background = '#27ae60';
             }
         });
     });
 }
-
-loadNews();
-
-loginButton.addEventListener('click', attemptLogin);
-passwordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') attemptLogin();
-});
-
-navButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const section = button.dataset.section;
-        switchSection(section);
-    });
-});
-
-modalClose.addEventListener('click', () => {
-    newsModal.classList.add('hidden');
-});
-
-newsModal.addEventListener('click', (e) => {
-    if (e.target === newsModal) {
-        newsModal.classList.add('hidden');
-    }
-});
-
-// Evento para cuando el video termina (funciona con <video> tags locales)
-// truthVideo.addEventListener('ended', () => {
-//     choiceButtons.classList.remove('hidden');
-// });
 
 // Solución alternativa para iframes de Google Drive: setTimeout
 // El video de Google Drive dura 38 segundos
@@ -130,30 +108,55 @@ function startVideoTimer() {
     }, 38000); // 38 segundos en milisegundos
 }
 
-truthPill.addEventListener('click', () => showConsequence('truth'));
-medicinePill.addEventListener('click', () => showConsequence('medicine'));
-restartButton.addEventListener('click', restartApp);
-
 async function hashPassword(value) {
     const encoder = new TextEncoder();
     const data = encoder.encode(value);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+    return hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
 async function attemptLogin() {
     const password = passwordInput.value.trim();
     const passwordHash = await hashPassword(password);
     
+
     if (passwordHash === PASSWORD_HASH) {
-        showScreen('blog');
-        switchSection('news'); // Resetear a la sección de noticias al hacer login
-    } else {
-        errorMessage.textContent = 'No eres suficiente milenial para saber la contraseña. ¡Dale una vuelta!';
+        errorMessage.textContent = '';
         passwordInput.value = '';
-        passwordInput.focus();
+        loginForm.classList.add('hidden');
+        loginTitle.classList.add('hidden');
+        captchaContainer.classList.remove('hidden');
+        return;
     }
+
+    errorMessage.textContent = 'No eres suficiente milenial para saber la contraseña. ¡Dale una vuelta!';
+    passwordInput.value = '';
+    passwordInput.focus();
+}
+
+function toggleEmotionSelection(option) {
+    const emotion = option.dataset.emotion;
+    if (selectedEmotions.has(emotion)) {
+        selectedEmotions.delete(emotion);
+        option.classList.remove('selected');
+    } else {
+        selectedEmotions.add(emotion);
+        option.classList.add('selected');
+    }
+}
+
+function verifyCaptcha() {
+    const allSelected = REQUIRED_EMOTIONS.every((emotion) => selectedEmotions.has(emotion));
+
+    if (!allSelected) {
+        errorMessage.textContent = '¿Seguro que eres humano? ¿Has tomado Valenthia? Vuelvelo a intentar';
+        return;
+    }
+
+    errorMessage.textContent = '';
+    showScreen('blog');
+    switchSection('news'); // Resetear a la sección de noticias al hacer login
 }
 
 function showScreen(screenName) {
@@ -161,71 +164,65 @@ function showScreen(screenName) {
     blogScreen.classList.add('hidden');
     consequenceScreen.classList.add('hidden');
 
-    switch(screenName) {
-        case 'login':
-            loginScreen.classList.remove('hidden');
-            break;
-        case 'blog':
-            blogScreen.classList.remove('hidden');
-            break;
-        case 'consequence':
-            consequenceScreen.classList.remove('hidden');
-            break;
-    }
+    if (screenName === 'login') loginScreen.classList.remove('hidden');
+    if (screenName === 'blog') blogScreen.classList.remove('hidden');
+    if (screenName === 'consequence') consequenceScreen.classList.remove('hidden');
 }
 
 function switchSection(section) {
-    console.log('Cambiando a sección:', section);
-    navButtons.forEach(btn => btn.classList.remove('active'));
-    
+    navButtons.forEach((btn) => btn.classList.remove('active'));
+
     if (section === 'news') {
         navButtons[0].classList.add('active');
         newsSection.classList.remove('hidden');
         truthSection.classList.add('hidden');
-    } else if (section === 'truth') {
+        return;
+    }
+
+    if (section === 'truth') {
         navButtons[1].classList.add('active');
         newsSection.classList.add('hidden');
         truthSection.classList.remove('hidden');
-        
+
         if (newsReadCount === 0) {
             truthMessage.textContent = 'Necesitas estar más informado para revelar la verdad. Lee más noticias antes de continuar.';
             truthMessage.style.display = 'block';
             videoContainer.classList.add('hidden');
             choiceButtons.classList.add('hidden');
-        } else {
-            console.log('Mostrando video e iniciando timer');
-            truthMessage.style.display = 'none';
-            videoContainer.classList.remove('hidden');
-            choiceButtons.classList.add('hidden');
-            // No se puede resetear iframe de Google Drive
-            // truthVideo.currentTime = 0;
-            // truthVideo.play();
-            // Iniciar el timer para mostrar botones después de 38 segundos
-            startVideoTimer();
+            return;
         }
+
+        // No se puede resetear iframe de Google Drive
+        // truthVideo.currentTime = 0;
+        // truthVideo.play();
+        // Iniciar el timer para mostrar botones después de 38 segundos
+        truthMessage.style.display = 'none';
+        videoContainer.classList.remove('hidden');
+        choiceButtons.classList.add('hidden');
+        startVideoTimer();
     }
 }
 
 function showConsequence(choice) {
     showScreen('consequence');
-    
+
     let content = '';
-    
+
     if (choice === 'truth') {
         content = `
             <h2 class="consequence-title" style="color: #e74c3c;">Has contado la verdad</h2>
             <p class="consequence-text">
-                Al elegir contar la verdad, has revelado que Valenthia no es un medicamento milagroso, 
-                sino una herramienta de control mental diseñada para eliminar la capacidad crítica 
+                Al elegir contar la verdad, has revelado que Valenthia no es un medicamento milagroso,
+                sino una herramienta de control mental diseñada para eliminar la capacidad crítica
                 de las personas.
             </p>
             <p class="consequence-text">
-                La "felicidad" que promete es en realidad la pérdida total de voluntad propia. 
-                Los que toman el medicamento se convierten en dóciles seguidores incapaces de 
+                La "felicidad" que promete es en realidad la pérdida total de voluntad propia.
+                Los que toman el medicamento se convierten en dóciles seguidores incapaces de
                 cuestionar nada.
             </p>
             <p class="consequence-text">
-                Has despertado. Ahora eres consciente de la manipulación. 
+                Has despertado. Ahora eres consciente de la manipulación.
                 Pero... ¿qué harás con esta información?
             </p>
         `;
@@ -233,15 +230,15 @@ function showConsequence(choice) {
         content = `
             <h2 class="consequence-title" style="color: #3498db;">Has publicitado la pastilla</h2>
             <p class="consequence-text">
-                Sientes una calma absoluta. Todas tus preocupaciones desaparecen. 
+                Sientes una calma absoluta. Todas tus preocupaciones desaparecen.
                 El mundo parece perfecto ahora.
             </p>
             <p class="consequence-text">
-                Ya no te importan los peligros. Ya no te importan las preguntas. 
+                Ya no te importan los peligros. Ya no te importan las preguntas.
                 Solo sientes una felicidad plena y eterna.
             </p>
             <p class="consequence-text">
-                Cruzas la calle sin mirar. Un coche se acerca, pero no importa. 
+                Cruzas la calle sin mirar. Un coche se acerca, pero no importa.
                 No sientes miedo. No sientes nada excepto... paz.
             </p>
             <p class="consequence-text" style="color: #e74c3c; font-weight: bold;">
@@ -249,7 +246,7 @@ function showConsequence(choice) {
             </p>
         `;
     }
-    
+
     consequenceContent.innerHTML = content;
 }
 
@@ -262,12 +259,49 @@ function restartApp() {
     
     newsReadCount = 0;
     renderNews();
-    
-    passwordInput.value = '';
+
+    selectedEmotions.clear();
+    captchaOptions.forEach((option) => option.classList.remove('selected'));
+
+    loginTitle.classList.remove('hidden');
+    loginForm.classList.remove('hidden');
+    captchaContainer.classList.add('hidden');
     errorMessage.textContent = '';
+    passwordInput.value = '';
     // No se puede pausar/resetear iframe de Google Drive
     // truthVideo.pause();
     // truthVideo.currentTime = 0;
-    
+
     showScreen('login');
 }
+
+loginButton.addEventListener('click', attemptLogin);
+passwordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') attemptLogin();
+});
+captchaContinueButton.addEventListener('click', verifyCaptcha);
+captchaOptions.forEach((option) => {
+    option.addEventListener('click', () => toggleEmotionSelection(option));
+});
+
+navButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+        switchSection(button.dataset.section);
+    });
+});
+
+modalClose.addEventListener('click', () => {
+    newsModal.classList.add('hidden');
+});
+
+newsModal.addEventListener('click', (e) => {
+    if (e.target === newsModal) {
+        newsModal.classList.add('hidden');
+    }
+});
+
+truthPill.addEventListener('click', () => showConsequence('truth'));
+medicinePill.addEventListener('click', () => showConsequence('medicine'));
+restartButton.addEventListener('click', restartApp);
+
+loadNews();

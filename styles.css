@@ -83,6 +83,63 @@ body {
     min-height: 1.2rem;
 }
 
+.captcha-container {
+    margin-top: 1.25rem;
+    text-align: left;
+}
+
+.captcha-question {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.captcha-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.captcha-option {
+    border: 2px solid #e0e0e0;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 0.75rem 0.7rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.captcha-option:hover {
+    border-color: #667eea;
+}
+
+.captcha-option.selected {
+    border-color: #667eea;
+    background: #eef1ff;
+    color: #2f3f9d;
+    font-weight: 600;
+}
+
+.captcha-continue-button {
+    margin-top: 0.9rem;
+    width: 100%;
+    padding: 0.85rem;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.captcha-continue-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 /* Blog Screen */
 .blog-container {
     background: white;

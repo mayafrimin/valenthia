@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -13,9 +13,21 @@
         <div id="login-screen" class="screen">
             <div class="login-container">
                 <h1 class="login-title">"Descuento" ;)</h1>
-                <div class="login-form">
+                <div id="login-form" class="login-form">
                     <input type="password" id="password-input" placeholder="Contraseña">
                     <button id="login-button">Entrar</button>
+                </div>
+                <div id="captcha-container" class="captcha-container hidden">
+                    <p class="captcha-question">¿Cuál de estas son emociones imprescindibles?</p>
+                    <div id="captcha-options" class="captcha-options">
+                        <button class="captcha-option" data-emotion="alegria">Alegría 😊</button>
+                        <button class="captcha-option" data-emotion="tristeza">Tristeza 😢</button>
+                        <button class="captcha-option" data-emotion="miedo">Miedo 😨</button>
+                        <button class="captcha-option" data-emotion="rabia">Rabia 😠</button>
+                        <button class="captcha-option" data-emotion="amor">Amor 🥰</button>
+                        <button class="captcha-option" data-emotion="sorpresa">Sorpresa 😮</button>
+                    </div>
+                    <button id="captcha-continue-button" class="captcha-continue-button">Enviar</button>
                 </div>
                 <p id="error-message" class="error-message"></p>
             </div>
