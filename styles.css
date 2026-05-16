@@ -1,4 +1,4 @@
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -81,6 +81,19 @@ body {
     font-size: 0.9rem;
     margin-top: 1rem;
     min-height: 1.2rem;
+}
+
+.error-message.shake {
+    animation: error-shake 280ms ease-in-out;
+}
+
+@keyframes error-shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+    100% { transform: translateX(0); }
 }
 
 .captcha-container {

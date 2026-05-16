@@ -108,6 +108,12 @@ function startVideoTimer() {
     }, 38000); // 38 segundos en milisegundos
 }
 
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.classList.remove('shake');
+    void errorMessage.offsetWidth;
+    errorMessage.classList.add('shake');
+}
 async function hashPassword(value) {
     const encoder = new TextEncoder();
     const data = encoder.encode(value);
@@ -130,7 +136,7 @@ async function attemptLogin() {
         return;
     }
 
-    errorMessage.textContent = 'No eres suficiente milenial para saber la contraseña. ¡Dale una vuelta!';
+    showError('No eres suficiente milenial para saber la contraseña. ¡Dale una vuelta!');
     passwordInput.value = '';
     passwordInput.focus();
 }
@@ -150,7 +156,7 @@ function verifyCaptcha() {
     const allSelected = REQUIRED_EMOTIONS.every((emotion) => selectedEmotions.has(emotion));
 
     if (!allSelected) {
-        errorMessage.textContent = '¿Seguro que eres humano? ¿Has tomado Valenthia? Vuelvelo a intentar';
+        showError('¿Seguro que eres humano? ¿Has tomado Valenthia? Vuelvelo a intentar');
         return;
     }
 
