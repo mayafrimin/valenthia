@@ -4,6 +4,7 @@ const REQUIRED_EMOTIONS = ['alegria', 'tristeza', 'miedo', 'rabia', 'amor', 'sor
 let newsReadCount = 0;
 let newsData = [];
 let videoTimerId = null; // Variable para guardar el ID del timer
+let truthChoicesUnlocked = false;
 const selectedEmotions = new Set();
 
 const loginScreen = document.getElementById('login-screen');
@@ -31,6 +32,7 @@ const modalClose = document.querySelector('.modal-close');
 
 const truthMessage = document.getElementById('truth-message');
 const videoContainer = document.getElementById('video-container');
+const truthVideo = document.getElementById('truth-video');
 const choiceButtons = document.getElementById('choice-buttons');
 
 const truthPill = document.getElementById('truth-pill');
@@ -104,8 +106,16 @@ function startVideoTimer() {
     videoTimerId = setTimeout(() => {
         console.log('Timer completado - Mostrando botones');
         console.log('choiceButtons element:', choiceButtons);
+        truthChoicesUnlocked = true;
+        videoTimerId = null;
         choiceButtons.classList.remove('hidden');
     }, 38000); // 38 segundos en milisegundos
+}
+
+function resetTruthVideo() {
+    const currentSrc = truthVideo.getAttribute('src');
+    truthVideo.setAttribute('src', '');
+    truthVideo.setAttribute('src', currentSrc);
 }
 
 function showError(message) {
@@ -204,12 +214,25 @@ function switchSection(section) {
         // Iniciar el timer para mostrar botones después de 38 segundos
         truthMessage.style.display = 'none';
         videoContainer.classList.remove('hidden');
-        choiceButtons.classList.add('hidden');
-        startVideoTimer();
+        if (truthChoicesUnlocked) {
+            choiceButtons.classList.remove('hidden');
+        } else {
+            choiceButtons.classList.add('hidden');
+            startVideoTimer();
+        }
     }
 }
 
 function showConsequence(choice) {
+    // Si ya elegiste, al volver a este punto se vuelve a esperar el tiempo completo.
+    truthChoicesUnlocked = false;
+    if (videoTimerId !== null) {
+        clearTimeout(videoTimerId);
+        videoTimerId = null;
+    }
+    // Para iframes de Google Drive, reasignar el src fuerza empezar desde el inicio.
+    resetTruthVideo();
+
     showScreen('consequence');
 
     let content = '';
@@ -262,6 +285,7 @@ function restartApp() {
         clearTimeout(videoTimerId);
         videoTimerId = null;
     }
+    truthChoicesUnlocked = false;
     
     newsReadCount = 0;
     renderNews();
@@ -277,6 +301,7 @@ function restartApp() {
     // No se puede pausar/resetear iframe de Google Drive
     // truthVideo.pause();
     // truthVideo.currentTime = 0;
+    resetTruthVideo();
 
     showScreen('login');
 }
