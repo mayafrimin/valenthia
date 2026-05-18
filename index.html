@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog privado de Maya</title>
+    <link rel="icon" type="image/png" href="sobredosis.png?v=4">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,9 +13,21 @@
         <div id="login-screen" class="screen">
             <div class="login-container">
                 <h1 class="login-title">"Descuento" ;)</h1>
-                <div class="login-form">
+                <div id="login-form" class="login-form">
                     <input type="password" id="password-input" placeholder="Contraseña">
                     <button id="login-button">Entrar</button>
+                </div>
+                <div id="captcha-container" class="captcha-container hidden">
+                    <p class="captcha-question">¿Qué emoción es la más importante?</p>
+                    <div id="captcha-options" class="captcha-options">
+                        <button class="captcha-option" data-emotion="alegria">Alegría 😊</button>
+                        <button class="captcha-option" data-emotion="tristeza">Tristeza 😢</button>
+                        <button class="captcha-option" data-emotion="miedo">Miedo 😨</button>
+                        <button class="captcha-option" data-emotion="rabia">Rabia 😠</button>
+                        <button class="captcha-option" data-emotion="amor">Amor 🥰</button>
+                        <button class="captcha-option" data-emotion="sorpresa">Sorpresa 😮</button>
+                    </div>
+                    <button id="captcha-continue-button" class="captcha-continue-button">Enviar</button>
                 </div>
                 <p id="error-message" class="error-message"></p>
             </div>
@@ -59,13 +72,25 @@
                                         frameborder="0"
                                         style="border-radius: 8px;">
                                     </iframe>
+                                    <details class="video-help">
+                                        <summary>
+                                            <span class="video-help-icon">?</span>
+                                            ¿Error para ver el vídeo?
+                                        </summary>
+                                        <div class="video-help-content">
+                                            <p>Ábrelo aparte y vuelve a esta página después para tomar la decisión final.</p>
+                                            <a href="https://drive.google.com/file/d/1bbxv4JTc3PA4YTEDdxACXr3JwmKEPDKQ/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                                                Abrir vídeo
+                                            </a>
+                                        </div>
+                                    </details>
                                 </div>
                                 <div id="choice-buttons" class="choice-buttons hidden">
-                                    <button class="pill-button blue" id="truth-pill">
+                                    <button class="pill-button red" id="truth-pill">
                                         <span class="pill-icon">💊</span>
                                         Contar la verdad
                                     </button>
-                                    <button class="pill-button red" id="medicine-pill">
+                                    <button class="pill-button blue" id="medicine-pill">
                                         <span class="pill-icon">💊</span>
                                         Publicitar la pastilla
                                     </button>

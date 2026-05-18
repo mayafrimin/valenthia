@@ -1,29 +1,48 @@
 [
   {
+    "special": true,
+    "unlock": {
+      "question": "Hay un código escondido donde nadie mira dos veces. Está fuera de la pantalla, entre tinta y papel. ¿Cuál es?"
+    },
     "title": "⚠️ ALERTA: Nuevos síntomas secundarios sin registrar",
-    "summary": "Comienzan a circular informes sobre efectos secundarios preocupantes. Usuarios reportan falta de percepción del peligro, incluyendo incidentes donde personas no reaccionaron ante vehículos en movimiento. La farmacéutica niega la existencia de efectos adversos, pero no existen estudios que lo avalen.",
-    "fullContent": "⚠️ ALERTA: Nuevos síntomas secundarios sin registrar\n\nComienzan a circular informes sobre efectos secundarios preocupantes. Usuarios reportan falta de percepción del peligro, incluyendo incidentes donde personas no reaccionaron ante vehículos en movimiento.\n\nEl Hospital Central ha reportado un aumento del 78% en casos de atropellos en los últimos tres meses. Lo alarmante es que las víctimas no intentaron esquivar los vehículos.\n\n\"Vi a una persona cruzar la calle mientras un camión se acercaba\", testifica un conductor. \"No aceleró, no frenó, ni siquiera miró. Simplemente siguió caminando como si nada pasara. Tuve que frenar bruscamente para no atropellarla.\"\n\nLos médicos están investigando si existe una conexión con Valenthia. \"Los pacientes que llegan muestran un patrón: todos toman el medicamento y ninguno muestra reacción de miedo o autopreservación\", explica el Dr. Rodríguez.\n\nValenthia ha emitido un comunicado negando cualquier relación, pero las evidencias son preocupantes."
+    "summary": "Contenido especial bloqueado. Para leerlo necesitas el código escondido en el prospecto de Valenthia.",
+    "fullContent": "Nuevos síntomas secundarios sin registrar\n\nEl primer informe interno describe una alteración grave: usuarios que ya no perciben el peligro aunque lo tengan delante. La pastilla Valenthia no solo calma la ansiedad; también parece apagar la urgencia de sobrevivir.\n\nUna conductora declaró que una persona cruzó la calle mientras un camión se acercaba. No aceleró, no frenó, ni siquiera miró. En su bolsillo encontraron la pastilla con el envase intacto y una pauta de consumo reciente.\n\nLos médicos anotaron que la pastilla aparece asociada a respuestas emocionales planas. En los expedientes se repite una frase: cada pastilla reduce miedo, alarma y autoprotección.\n\nValenthia niega cualquier relación, pero el patrón es demasiado claro para ignorarlo."
   },
   {
+    "special": true,
+    "unlock": {
+      "question": "En el primer informe, una misma palabra se repite como una dosis constante. Si cuentas cada eco exacto dentro del texto oculto, obtendrás la llave. ¿Cuántas veces aparece?"
+    },
     "title": "Investigación: ¿Por qué la gente está muriendo?",
-    "summary": "Expertos alertan sobre un patrón alarmante: la \"falta de importancia\" ante situaciones de peligro vital. Casos documentados de atropellos por no percibir el riesgo.",
-    "fullContent": "Investigación: ¿Por qué la gente está muriendo?\n\nExpertos alertan sobre un patrón alarmante: la \"falta de importancia\" ante situaciones de peligro vital. Casos documentados de atropellos por no percibir el riesgo.\n\nUn equipo de investigadores de la Universidad Nacional ha publicado un estudio preliminar que conecta el aumento de muertes accidentales con el consumo de Valenthia.\n\n\"Analizamos 500 casos de muertes por negligencia en los últimos seis meses\", explica la Dra. López. \"El 85% de las víctimas tenían Valenthia en su sistema. Lo más aterrador es que todas las muertes fueron evitables si las personas hubieran reaccionado normalmente.\"\n\nLos casos incluyen: personas que no salieron de edificios en llamas, conductores que no frenaron ante obstáculos, e incluso alguien que no se movió cuando un objeto caía hacia él.\n\n\"El medicamento parece eliminar la respuesta de miedo\", concluye el estudio. \"Sin miedo, no hay supervivencia.\""
+    "summary": "Contenido especial bloqueado. La clave está en la 'ALERTA'.",
+    "fullContent": "¿Por qué la gente está muriendo?\n\nExpertos alertan sobre un patrón alarmante: la falta de importancia ante situaciones de peligro vital. Casos documentados muestran personas que no reaccionan ante atropellos, incendios o caídas de objetos.\n\nUn equipo de investigadores de la Universidad Nacional ha publicado un estudio preliminar que conecta el aumento de muertes accidentales con el consumo de Valenthia. El informe fue firmado por el Hospital Central, que detectó el primer pico de ingresos.\n\n\"Analizamos 500 casos de muertes por negligencia en los últimos seis meses\", explica la Dra. López. \"El 85% de las víctimas tenían Valenthia en su sistema. Lo más aterrador es que casi todas las muertes eran evitables.\"\n\nLa conclusión es directa: el medicamento parece eliminar la respuesta de miedo. Sin miedo, no hay supervivencia."
   },
   {
-    "title": "El dilema psicológico detrás de Valenthia",
-    "summary": "¿Vale la pena la felicidad eterna si el precio es perder el instinto de supervivencia? La comunidad médica debate sobre los riesgos de este medicamento revolucionario.",
-    "fullContent": "El dilema psicológico detrás de Valenthia\n\n¿Vale la pena la felicidad eterna si el precio es perder el instinto de supervivencia? La comunidad médica debate sobre los riesgos de este medicamento revolucionario.\n\nLa Asociación de Psicólogos ha emitido una declaración urgente pidiendo la suspensión inmediata de Valenthia hasta que se complete una investigación exhaustiva.\n\n\"La felicidad sin miedo no es felicidad, es aniquilación de la consciencia\", declara el Dr. González, presidente de la asociación. \"El miedo no es un defecto, es un mecanismo de supervivencia esencial. Eliminarlo es eliminar lo que nos hace humanos.\"\n\nPor otro lado, defensores del medicamento argumentan que el sufrimiento es innecesario. \"¿Por qué tenemos que sufrir para estar vivos?\", cuestiona la Dra. Pérez, investigadora de Valenthia. \"Valenthia nos libera de la carga evolutiva del miedo. Es el siguiente paso en la evolución humana.\"\n\nEl debate continúa mientras las muertes aumentan. ¿Es Valenthia el futuro de la humanidad o su fin?"
+    "special": true,
+    "unlock": {
+      "question": "Entre universidades, cifras y advertencias, hay un lugar que firmó el documento más inquietante. No busques médicos: busca el edificio."
+    },
+    "title": "Asociación de Psicólogos: El dilema psicológico detrás de Valenthia",
+    "summary": "Contenido especial bloqueado. La respuesta aparece dentro de la 'Investigación'.",
+    "fullContent": "El dilema psicológico detrás de Valenthia\n\n¿Vale la pena una felicidad permanente si el precio es perder el instinto de supervivencia? La comunidad médica debate sobre los riesgos de Valenthia mientras las cifras empeoran.\n\nLa Asociación de Psicólogos ha pedido suspender el medicamento. \"La felicidad sin miedo no es felicidad, es anulación de la conciencia\", declara la doctora Vega. \"El miedo no es un defecto: es una alarma que mantiene viva a una persona.\"\n\nDefensores de Valenthia responden que el sufrimiento es innecesario. Pero la doctora Vega insiste en que eliminar toda emoción incómoda también elimina la capacidad de decidir.\n\nEl debate continúa mientras las muertes aumentan. Valenthia promete paz, pero cada informe parece describir obediencia."
   },
   {
-  
-    "title": "Documentos filtrados revelan pruebas ocultas",
-    "summary": "Un exempleado de Valenthia asegura que los efectos secundarios eran conocidos desde el inicio.",
-    "fullContent": "Documentos filtrados revelan pruebas ocultas\n\nDocumentos internos filtrados por un exempleado anónimo de Valenthia sugieren que los efectos secundarios de Valenthia no solo eran conocidos, sino deliberadamente ocultados.\n\nSegún los informes, durante las primeras fases de prueba, más del 40% de los sujetos mostraron una “desactivación completa de respuestas emocionales críticas”, incluyendo miedo, urgencia y apego emocional.\n\n“Nos dijeron que lo llamáramos ‘estabilidad emocional avanzada’ en lugar de ‘supresión conductual’”, declara el informante. “Pero sabíamos lo que significaba: estaban apagando los mecanismos de supervivencia.”\n\nLos documentos también muestran discusiones internas sobre el “potencial comercial” de una población más dócil y menos reactiva.\n\nValenthia ha negado la autenticidad de los archivos."
+    "special": true,
+    "unlock": {
+      "question": "Una doctora habló sobre el miedo como si fuera vida. Su nombre quedó incompleto para quien no presta atención. Quédate solo con la última parte."
+    },
+    "title": "Documentos: filtrados revelan pruebas ocultas",
+    "summary": "Contenido especial bloqueado. La clave anda por 'Asociación de Psicólogos'.",
+    "fullContent": "Documentos filtrados revelan pruebas ocultas\n\nDocumentos internos filtrados por un exempleado anónimo de Valenthia sugieren que los efectos secundarios no solo eran conocidos, sino deliberadamente ocultados.\n\nDurante las pruebas de fase 7, más del 40% de los sujetos mostró una desactivación completa de respuestas emocionales críticas, incluyendo miedo, urgencia y apego.\n\n\"Nos dijeron que lo llamáramos estabilidad emocional avanzada\", declara el informante. \"Pero sabíamos lo que significaba: estaban apagando los mecanismos de supervivencia.\"\n\nLos documentos también muestran discusiones internas sobre el potencial comercial de una población más dócil y menos reactiva. Valenthia ha negado la autenticidad de los archivos."
   },
   {
+    "special": true,
+    "unlock": {
+      "question": "Las pruebas avanzaron demasiado lejos antes de que alguien hablara. El número está escondido justo después de la palabra que define cada etapa."
+    },
     "title": "Gobiernos bajo sospecha: ¿interés en una población sin miedo?",
-    "summary": "Analistas señalan posibles vínculos entre el medicamento y programas de control social.",
-    "fullContent": "Gobiernos bajo sospecha: ¿interés en una población sin miedo?\n\nA medida que crecen las preocupaciones sobre Valenthia, algunos analistas comienzan a cuestionar si su expansión ha sido realmente accidental.\n\n“Eliminar el miedo no solo elimina el sufrimiento”, explica un experto en comportamiento social. “También elimina la protesta, la resistencia y la desobediencia.”\n\nSe han reportado contratos entre Valenthia y varias instituciones gubernamentales para el suministro del medicamento en programas piloto de “bienestar social”.\n\nEn algunas regiones, trabajadores esenciales han sido incentivados a consumir Valenthia para reducir el estrés laboral. Sin embargo, compañeros de trabajo reportan comportamientos extraños: falta de reacción ante accidentes, apatía total ante conflictos y disminución extrema de iniciativa.\n\n“No es bienestar”, afirma un sindicalista. “Es control.”"
+    "summary": "Contenido especial bloqueado. La clave está en los 'Documentos'.",
+    "fullContent": "Gobiernos bajo sospecha\n\nA medida que crecen las preocupaciones sobre Valenthia, algunos analistas cuestionan si su expansión ha sido realmente accidental.\n\n\"Eliminar el miedo no solo elimina el sufrimiento\", explica un experto en comportamiento social. \"También elimina la protesta, la resistencia y la desobediencia.\"\n\nSe han reportado contratos entre Valenthia y varias instituciones gubernamentales para el suministro del medicamento en programas piloto de bienestar social.\n\nEn algunas regiones, trabajadores esenciales han sido incentivados a consumir Valenthia para reducir el estrés laboral. Sin embargo, compañeros de trabajo reportan comportamientos extraños: falta de reacción ante accidentes, apatía ante conflictos y disminución extrema de iniciativa.\n\n\"No es bienestar\", afirma un sindicalista. \"Es control.\""
   },
   {
     "title": "Aumento de desapariciones inexplicables",
