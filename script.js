@@ -15,6 +15,8 @@ const specialNewsUnlocked = new Set();
 let videoTimerId = null; // Variable para guardar el ID del timer
 let truthChoicesUnlocked = false;
 const selectedEmotions = new Set();
+let consequenceCaptchaAttempt = 0;
+let consequenceCaptchaTimerId = null;
 
 const loginScreen = document.getElementById('login-screen');
 const blogScreen = document.getElementById('blog-screen');
@@ -320,6 +322,12 @@ function showConsequence(choice) {
     resetTruthVideo();
 
     showScreen('consequence');
+    consequenceCaptchaAttempt = 0;
+    if (consequenceCaptchaTimerId !== null) {
+        clearTimeout(consequenceCaptchaTimerId);
+        consequenceCaptchaTimerId = null;
+    }
+    restartButton.classList.toggle('hidden', choice === 'medicine');
 
     let content = '';
 
@@ -362,10 +370,53 @@ function showConsequence(choice) {
             <p class="consequence-text" style="color: #e74c3c; font-weight: bold;">
                 Fin del juego. Has perdido tu capacidad de cuestionar.
             </p>
+            <div class="return-captcha" id="return-captcha">
+                <p class="return-captcha-label">Verifica que eres humano para volver al inicio.</p>
+                <button class="return-captcha-box" id="return-captcha-box" type="button" aria-label="Iniciar verificación humana">
+                    <span class="return-captcha-square" aria-hidden="true"></span>
+                    <span class="return-captcha-text">No soy un robot</span>
+                </button>
+                <p class="return-captcha-status" id="return-captcha-status" aria-live="polite"></p>
+            </div>
         `;
     }
 
     consequenceContent.innerHTML = content;
+    const returnCaptchaBox = document.getElementById('return-captcha-box');
+    if (returnCaptchaBox) {
+        returnCaptchaBox.addEventListener('click', runReturnCaptcha);
+    }
+}
+
+function runReturnCaptcha() {
+    const captchaBox = document.getElementById('return-captcha-box');
+    const captchaStatus = document.getElementById('return-captcha-status');
+    if (!captchaBox || !captchaStatus || captchaBox.disabled) return;
+
+    const messages = [
+        'Verificación fallida. Actividad sospechosa detectada. Intenta de nuevo.',
+        'Verificación fallida. Sin actividad humana detectada. Intenta una ultima vez.',
+        '⚠️ ¡Error del sistema! Acceso denegado por respuesta emocional insuficiente.'
+    ];
+
+    captchaBox.disabled = true;
+    captchaBox.classList.add('is-loading');
+    captchaStatus.textContent = 'Cargando...';
+
+    consequenceCaptchaTimerId = setTimeout(() => {
+        captchaBox.classList.remove('is-loading');
+        captchaStatus.textContent = messages[consequenceCaptchaAttempt];
+        consequenceCaptchaAttempt++;
+
+        if (consequenceCaptchaAttempt >= messages.length) {
+            restartButton.classList.remove('hidden');
+            consequenceCaptchaTimerId = null;
+            return;
+        }
+
+        captchaBox.disabled = false;
+        consequenceCaptchaTimerId = null;
+    }, 1800);
 }
 
 function restartApp() {
@@ -374,7 +425,13 @@ function restartApp() {
         clearTimeout(videoTimerId);
         videoTimerId = null;
     }
+    if (consequenceCaptchaTimerId !== null) {
+        clearTimeout(consequenceCaptchaTimerId);
+        consequenceCaptchaTimerId = null;
+    }
     truthChoicesUnlocked = false;
+    consequenceCaptchaAttempt = 0;
+    restartButton.classList.remove('hidden');
     
     newsReadCount = 0;
     specialNewsUnlocked.clear();
