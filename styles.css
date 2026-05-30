@@ -314,6 +314,68 @@ body {
     border: 2px solid #ffc107;
 }
 
+.truth-riddle {
+    max-width: 560px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #fff8f3;
+    border: 2px solid #c0392b;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.truth-riddle-question {
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.truth-riddle-controls {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.truth-riddle-input {
+    width: min(100%, 180px);
+    padding: 0.8rem 1rem;
+    border: 2px solid #d8dbe5;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.truth-riddle-input:focus {
+    outline: none;
+    border-color: #c0392b;
+    box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.16);
+}
+
+.truth-riddle-submit {
+    padding: 0.8rem 1.2rem;
+    background: #c0392b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: background 0.3s;
+}
+
+.truth-riddle-submit:hover {
+    background: #a93226;
+}
+
+.truth-riddle-error {
+    min-height: 1.4rem;
+    margin-top: 0.8rem;
+    color: #c0392b;
+    font-weight: 700;
+}
+
 .video-container {
     position: relative;
     margin: 2rem 0;

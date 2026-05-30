@@ -2,18 +2,20 @@
 const REQUIRED_EMOTIONS = ['alegria', 'tristeza', 'miedo', 'rabia', 'amor', 'sorpresa'];
 
 const SPECIAL_NEWS_ANSWER_HASHES = [
-    '6cdfefb9f3e96e75b8b0bb4f4efc6efdd20cf51666f716c9303e9170c250d1ef',
+    '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
     '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
     '404f6a57f5e183f7f27d3656405e1f35f029f4e4566130180b8af50b914ce046',
     '313ce7d71787960e3bb5f8258c173ae466b4e08e1e7d24b9c7a5ba81c9a02d96',
     '7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451'
 ];
+const TRUTH_RIDDLE_ANSWER_HASH = '9f14025af0065b30e47e23ebb3b491d39ae8ed17d33739e5ff3827ffb3634953';
 
 let newsReadCount = 0;
 let newsData = [];
 const specialNewsUnlocked = new Set();
 let videoTimerId = null; // Variable para guardar el ID del timer
 let truthChoicesUnlocked = false;
+let truthRiddleSolved = false;
 const selectedEmotions = new Set();
 let consequenceCaptchaAttempt = 0;
 let consequenceCaptchaTimerId = null;
@@ -42,6 +44,10 @@ const modalBody = document.getElementById('modal-body');
 const modalClose = document.querySelector('.modal-close');
 
 const truthMessage = document.getElementById('truth-message');
+const truthRiddle = document.getElementById('truth-riddle');
+const truthRiddleInput = document.getElementById('truth-riddle-input');
+const truthRiddleSubmit = document.getElementById('truth-riddle-submit');
+const truthRiddleError = document.getElementById('truth-riddle-error');
 const videoContainer = document.getElementById('video-container');
 const truthVideo = document.getElementById('truth-video');
 const choiceButtons = document.getElementById('choice-buttons');
@@ -184,9 +190,9 @@ function showUnlockChallenge(newsIndex) {
 }
 
 // Solución alternativa para iframes de Google Drive: setTimeout
-// El video de Google Drive dura 38 segundos
+// El video de Google Drive dura 36 segundos
 function startVideoTimer() {
-    console.log('Timer iniciado - Los botones aparecerán en 38 segundos');
+    console.log('Timer iniciado - Los botones aparecerán en 36 segundos');
     // Cancelar timer anterior si existe
     if (videoTimerId !== null) {
         clearTimeout(videoTimerId);
@@ -197,13 +203,61 @@ function startVideoTimer() {
         truthChoicesUnlocked = true;
         videoTimerId = null;
         choiceButtons.classList.remove('hidden');
-    }, 38000); // 38 segundos en milisegundos
+    }, 36000); // 36 segundos en milisegundos
 }
 
 function resetTruthVideo() {
     const currentSrc = truthVideo.getAttribute('src');
     truthVideo.setAttribute('src', '');
     truthVideo.setAttribute('src', currentSrc);
+}
+
+function normalizeTruthRiddleAnswer(value) {
+    return value.trim().replace(/\D/g, '');
+}
+
+function showTruthRiddle() {
+    truthMessage.style.display = 'none';
+    truthRiddle.classList.remove('hidden');
+    videoContainer.classList.add('hidden');
+    choiceButtons.classList.add('hidden');
+    truthRiddleError.textContent = '';
+    truthRiddleInput.value = '';
+    truthRiddleInput.focus();
+}
+
+function showTruthVideo() {
+    truthMessage.style.display = 'none';
+    truthRiddle.classList.add('hidden');
+    videoContainer.classList.remove('hidden');
+
+    if (truthChoicesUnlocked) {
+        choiceButtons.classList.remove('hidden');
+        return;
+    }
+
+    choiceButtons.classList.add('hidden');
+    if (videoTimerId === null) {
+        startVideoTimer();
+    }
+}
+
+async function verifyTruthRiddle() {
+    const answerHash = await hashPassword(normalizeTruthRiddleAnswer(truthRiddleInput.value));
+
+    if (answerHash !== TRUTH_RIDDLE_ANSWER_HASH) {
+        truthRiddleError.textContent = 'Ese número no desbloquea la verdad.';
+        truthRiddle.classList.remove('shake');
+        void truthRiddle.offsetWidth;
+        truthRiddle.classList.add('shake');
+        truthRiddleInput.focus();
+        return;
+    }
+
+    truthRiddleError.textContent = '';
+    truthRiddleSolved = true;
+    resetTruthVideo();
+    showTruthVideo();
 }
 
 function showError(message) {
@@ -291,23 +345,18 @@ function switchSection(section) {
         if (newsReadCount < newsData.length) {
             truthMessage.textContent = `Necesitas estar más informado para revelar la verdad. Lee más noticias antes de continuar. Has leído ${newsReadCount} de ${newsData.length}.`;
             truthMessage.style.display = 'block';
+            truthRiddle.classList.add('hidden');
             videoContainer.classList.add('hidden');
             choiceButtons.classList.add('hidden');
             return;
         }
 
-        // No se puede resetear iframe de Google Drive
-        // truthVideo.currentTime = 0;
-        // truthVideo.play();
-        // Iniciar el timer para mostrar botones después de 38 segundos
-        truthMessage.style.display = 'none';
-        videoContainer.classList.remove('hidden');
-        if (truthChoicesUnlocked) {
-            choiceButtons.classList.remove('hidden');
-        } else {
-            choiceButtons.classList.add('hidden');
-            startVideoTimer();
+        if (!truthRiddleSolved) {
+            showTruthRiddle();
+            return;
         }
+
+        showTruthVideo();
     }
 }
 
@@ -430,6 +479,7 @@ function restartApp() {
         consequenceCaptchaTimerId = null;
     }
     truthChoicesUnlocked = false;
+    truthRiddleSolved = false;
     consequenceCaptchaAttempt = 0;
     restartButton.classList.remove('hidden');
     
@@ -460,6 +510,10 @@ passwordInput.addEventListener('keypress', (e) => {
 captchaContinueButton.addEventListener('click', verifyCaptcha);
 captchaOptions.forEach((option) => {
     option.addEventListener('click', () => toggleEmotionSelection(option));
+});
+truthRiddleSubmit.addEventListener('click', verifyTruthRiddle);
+truthRiddleInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') verifyTruthRiddle();
 });
 
 navButtons.forEach((button) => {

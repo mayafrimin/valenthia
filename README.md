@@ -19,7 +19,7 @@ Valenthia/
 
 - **Login**: Sistema de autenticación con contraseña
 - **Noticias encubiertas**: Noticias sobre Valenthia con modal de lectura completa
-- **Desvelo la verdad**: Solo accesible después de leer al menos 1 noticia
+- **Desvelo la verdad**: Solo accesible después de leer todas las noticias y resolver el acertijo final
 - **Elección final**: Dos opciones con consecuencias diferentes
 - **Modal de noticias**: Popup interactivo para leer el contenido completo
 

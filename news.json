@@ -2,7 +2,7 @@
   {
     "special": true,
     "unlock": {
-      "question": "Hay un código escondido donde nadie mira dos veces. Está fuera de la pantalla, entre tinta y papel. ¿Cuál es?"
+      "question": "Para leer la noticia tendras que saber cuantos dias necesitas para depender de su efecto"
     },
     "title": "⚠️ ALERTA: Nuevos síntomas secundarios sin registrar",
     "summary": "Contenido especial bloqueado. Para leerlo necesitas el código escondido en el prospecto de Valenthia.",
@@ -11,7 +11,7 @@
   {
     "special": true,
     "unlock": {
-      "question": "En el primer informe, una misma palabra se repite como una dosis constante. Si cuentas cada eco dentro del texto oculto, obtendrás la llave. ¿Cuántas veces aparece?"
+      "question": "En el primer informe, una misma palabra se repite como una dosis constante. Si cuentas cuantas hay, obtendrás la llave. ¿Cuántas veces aparece?"
     },
     "title": "Investigación: ¿Por qué la gente está muriendo?",
     "summary": "Contenido especial bloqueado. La clave está en la 'ALERTA'.",

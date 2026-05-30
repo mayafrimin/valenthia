@@ -61,6 +61,26 @@
                             <h2>Desvelo la verdad</h2>
                             <div id="truth-content">
                                 <p id="truth-message" class="truth-message"></p>
+                                <div id="truth-riddle" class="truth-riddle hidden">
+                                    <p class="truth-riddle-question">
+                                        Suma los resultados de las pruebas y añade el número de pastillas del bote.
+                                        El total abre la verdad.
+                                    </p>
+                                    <div class="truth-riddle-controls">
+                                        <input
+                                            type="text"
+                                            id="truth-riddle-input"
+                                            class="truth-riddle-input"
+                                            inputmode="numeric"
+                                            autocomplete="off"
+                                            placeholder="Número"
+                                        >
+                                        <button id="truth-riddle-submit" class="truth-riddle-submit" type="button">
+                                            Desbloquear
+                                        </button>
+                                    </div>
+                                    <p id="truth-riddle-error" class="truth-riddle-error" aria-live="polite"></p>
+                                </div>
                                 <div id="video-container" class="video-container hidden">
                                     <iframe 
                                         id="truth-video"
