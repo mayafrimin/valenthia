@@ -2,19 +2,23 @@
 const REQUIRED_EMOTIONS = ['alegria', 'tristeza', 'miedo', 'rabia', 'amor', 'sorpresa'];
 
 const SPECIAL_NEWS_ANSWER_HASHES = [
-    '6cdfefb9f3e96e75b8b0bb4f4efc6efdd20cf51666f716c9303e9170c250d1ef',
-    '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
-    '404f6a57f5e183f7f27d3656405e1f35f029f4e4566130180b8af50b914ce046',
-    '313ce7d71787960e3bb5f8258c173ae466b4e08e1e7d24b9c7a5ba81c9a02d96',
-    '7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451'
+    '6f4b6612125fb3a0daecd2799dfd6c9c299424fd920f9b308110a2c1fbd8f443',
+    'dbb1ded63bc70732626c5dfe6c7f50ced3d560e970f30b15335ac290358748f6',
+    'd80eae6e96d148b3b2abbbc6760077b66c4ea071f847dab573d507a32c4d99a5',
+    '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce',
+    'd59eced1ded07f84c145592f65bdf854358e009c5cd705f5215bf18697fed103'
 ];
+const TRUTH_RIDDLE_ANSWER_HASH = '7104741a92e73eb6c5d69cd04cf0afbe50a8796a010d8fa25daaf79e5e173bf3';
 
 let newsReadCount = 0;
 let newsData = [];
 const specialNewsUnlocked = new Set();
 let videoTimerId = null; // Variable para guardar el ID del timer
 let truthChoicesUnlocked = false;
+let truthRiddleSolved = false;
 const selectedEmotions = new Set();
+let consequenceCaptchaAttempt = 0;
+let consequenceCaptchaTimerId = null;
 
 const loginScreen = document.getElementById('login-screen');
 const blogScreen = document.getElementById('blog-screen');
@@ -40,6 +44,10 @@ const modalBody = document.getElementById('modal-body');
 const modalClose = document.querySelector('.modal-close');
 
 const truthMessage = document.getElementById('truth-message');
+const truthRiddle = document.getElementById('truth-riddle');
+const truthRiddleInput = document.getElementById('truth-riddle-input');
+const truthRiddleSubmit = document.getElementById('truth-riddle-submit');
+const truthRiddleError = document.getElementById('truth-riddle-error');
 const videoContainer = document.getElementById('video-container');
 const truthVideo = document.getElementById('truth-video');
 const choiceButtons = document.getElementById('choice-buttons');
@@ -182,9 +190,9 @@ function showUnlockChallenge(newsIndex) {
 }
 
 // Solución alternativa para iframes de Google Drive: setTimeout
-// El video de Google Drive dura 38 segundos
+// El video de Google Drive dura 36 segundos
 function startVideoTimer() {
-    console.log('Timer iniciado - Los botones aparecerán en 38 segundos');
+    console.log('Timer iniciado - Los botones aparecerán en 36 segundos');
     // Cancelar timer anterior si existe
     if (videoTimerId !== null) {
         clearTimeout(videoTimerId);
@@ -195,13 +203,61 @@ function startVideoTimer() {
         truthChoicesUnlocked = true;
         videoTimerId = null;
         choiceButtons.classList.remove('hidden');
-    }, 38000); // 38 segundos en milisegundos
+    }, 36000); // 36 segundos en milisegundos
 }
 
 function resetTruthVideo() {
     const currentSrc = truthVideo.getAttribute('src');
     truthVideo.setAttribute('src', '');
     truthVideo.setAttribute('src', currentSrc);
+}
+
+function normalizeTruthRiddleAnswer(value) {
+    return value.trim().replace(/\D/g, '');
+}
+
+function showTruthRiddle() {
+    truthMessage.style.display = 'none';
+    truthRiddle.classList.remove('hidden');
+    videoContainer.classList.add('hidden');
+    choiceButtons.classList.add('hidden');
+    truthRiddleError.textContent = '';
+    truthRiddleInput.value = '';
+    truthRiddleInput.focus();
+}
+
+function showTruthVideo() {
+    truthMessage.style.display = 'none';
+    truthRiddle.classList.add('hidden');
+    videoContainer.classList.remove('hidden');
+
+    if (truthChoicesUnlocked) {
+        choiceButtons.classList.remove('hidden');
+        return;
+    }
+
+    choiceButtons.classList.add('hidden');
+    if (videoTimerId === null) {
+        startVideoTimer();
+    }
+}
+
+async function verifyTruthRiddle() {
+    const answerHash = await hashPassword(normalizeTruthRiddleAnswer(truthRiddleInput.value));
+
+    if (answerHash !== TRUTH_RIDDLE_ANSWER_HASH) {
+        truthRiddleError.textContent = 'Ese número no desbloquea la verdad.';
+        truthRiddle.classList.remove('shake');
+        void truthRiddle.offsetWidth;
+        truthRiddle.classList.add('shake');
+        truthRiddleInput.focus();
+        return;
+    }
+
+    truthRiddleError.textContent = '';
+    truthRiddleSolved = true;
+    resetTruthVideo();
+    showTruthVideo();
 }
 
 function showError(message) {
@@ -289,23 +345,18 @@ function switchSection(section) {
         if (newsReadCount < newsData.length) {
             truthMessage.textContent = `Necesitas estar más informado para revelar la verdad. Lee más noticias antes de continuar. Has leído ${newsReadCount} de ${newsData.length}.`;
             truthMessage.style.display = 'block';
+            truthRiddle.classList.add('hidden');
             videoContainer.classList.add('hidden');
             choiceButtons.classList.add('hidden');
             return;
         }
 
-        // No se puede resetear iframe de Google Drive
-        // truthVideo.currentTime = 0;
-        // truthVideo.play();
-        // Iniciar el timer para mostrar botones después de 38 segundos
-        truthMessage.style.display = 'none';
-        videoContainer.classList.remove('hidden');
-        if (truthChoicesUnlocked) {
-            choiceButtons.classList.remove('hidden');
-        } else {
-            choiceButtons.classList.add('hidden');
-            startVideoTimer();
+        if (!truthRiddleSolved) {
+            showTruthRiddle();
+            return;
         }
+
+        showTruthVideo();
     }
 }
 
@@ -320,6 +371,12 @@ function showConsequence(choice) {
     resetTruthVideo();
 
     showScreen('consequence');
+    consequenceCaptchaAttempt = 0;
+    if (consequenceCaptchaTimerId !== null) {
+        clearTimeout(consequenceCaptchaTimerId);
+        consequenceCaptchaTimerId = null;
+    }
+    restartButton.classList.toggle('hidden', choice === 'medicine');
 
     let content = '';
 
@@ -362,10 +419,53 @@ function showConsequence(choice) {
             <p class="consequence-text" style="color: #e74c3c; font-weight: bold;">
                 Fin del juego. Has perdido tu capacidad de cuestionar.
             </p>
+            <div class="return-captcha" id="return-captcha">
+                <p class="return-captcha-label">Verifica que eres humano para volver al inicio.</p>
+                <button class="return-captcha-box" id="return-captcha-box" type="button" aria-label="Iniciar verificación humana">
+                    <span class="return-captcha-square" aria-hidden="true"></span>
+                    <span class="return-captcha-text">No soy un robot</span>
+                </button>
+                <p class="return-captcha-status" id="return-captcha-status" aria-live="polite"></p>
+            </div>
         `;
     }
 
     consequenceContent.innerHTML = content;
+    const returnCaptchaBox = document.getElementById('return-captcha-box');
+    if (returnCaptchaBox) {
+        returnCaptchaBox.addEventListener('click', runReturnCaptcha);
+    }
+}
+
+function runReturnCaptcha() {
+    const captchaBox = document.getElementById('return-captcha-box');
+    const captchaStatus = document.getElementById('return-captcha-status');
+    if (!captchaBox || !captchaStatus || captchaBox.disabled) return;
+
+    const messages = [
+        'Verificación fallida. Actividad sospechosa detectada. Intenta de nuevo.',
+        'Verificación fallida. Sin actividad humana detectada. Intenta una ultima vez.',
+        '⚠️ ¡Error del sistema! Acceso denegado por respuesta emocional insuficiente.'
+    ];
+
+    captchaBox.disabled = true;
+    captchaBox.classList.add('is-loading');
+    captchaStatus.textContent = 'Cargando...';
+
+    consequenceCaptchaTimerId = setTimeout(() => {
+        captchaBox.classList.remove('is-loading');
+        captchaStatus.textContent = messages[consequenceCaptchaAttempt];
+        consequenceCaptchaAttempt++;
+
+        if (consequenceCaptchaAttempt >= messages.length) {
+            restartButton.classList.remove('hidden');
+            consequenceCaptchaTimerId = null;
+            return;
+        }
+
+        captchaBox.disabled = false;
+        consequenceCaptchaTimerId = null;
+    }, 1800);
 }
 
 function restartApp() {
@@ -374,7 +474,14 @@ function restartApp() {
         clearTimeout(videoTimerId);
         videoTimerId = null;
     }
+    if (consequenceCaptchaTimerId !== null) {
+        clearTimeout(consequenceCaptchaTimerId);
+        consequenceCaptchaTimerId = null;
+    }
     truthChoicesUnlocked = false;
+    truthRiddleSolved = false;
+    consequenceCaptchaAttempt = 0;
+    restartButton.classList.remove('hidden');
     
     newsReadCount = 0;
     specialNewsUnlocked.clear();
@@ -403,6 +510,10 @@ passwordInput.addEventListener('keypress', (e) => {
 captchaContinueButton.addEventListener('click', verifyCaptcha);
 captchaOptions.forEach((option) => {
     option.addEventListener('click', () => toggleEmotionSelection(option));
+});
+truthRiddleSubmit.addEventListener('click', verifyTruthRiddle);
+truthRiddleInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') verifyTruthRiddle();
 });
 
 navButtons.forEach((button) => {

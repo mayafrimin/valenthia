@@ -61,12 +61,31 @@
                             <h2>Desvelo la verdad</h2>
                             <div id="truth-content">
                                 <p id="truth-message" class="truth-message"></p>
+                                <div id="truth-riddle" class="truth-riddle hidden">
+                                    <p class="truth-riddle-question">
+                                        Suma los resultados os dará el total para conocer la verdad.
+                                    </p>
+                                    <div class="truth-riddle-controls">
+                                        <input
+                                            type="text"
+                                            id="truth-riddle-input"
+                                            class="truth-riddle-input"
+                                            inputmode="numeric"
+                                            autocomplete="off"
+                                            placeholder="Número"
+                                        >
+                                        <button id="truth-riddle-submit" class="truth-riddle-submit" type="button">
+                                            Desbloquear
+                                        </button>
+                                    </div>
+                                    <p id="truth-riddle-error" class="truth-riddle-error" aria-live="polite"></p>
+                                </div>
                                 <div id="video-container" class="video-container hidden">
                                     <iframe 
                                         id="truth-video"
-                                        src="https://drive.google.com/file/d/1bbxv4JTc3PA4YTEDdxACXr3JwmKEPDKQ/preview" 
-                                        width="100%" 
-                                        height="600" 
+                                        src="https://drive.google.com/file/d/110puMW65rWBHfeaGy1nZvi2tNpIjbHBk/preview"
+                                        width="100%"
+                                        height="600"
                                         allow="autoplay"
                                         allowfullscreen
                                         frameborder="0"
@@ -79,20 +98,20 @@
                                         </summary>
                                         <div class="video-help-content">
                                             <p>Ábrelo aparte y vuelve a esta página después para tomar la decisión final.</p>
-                                            <a href="https://drive.google.com/file/d/1bbxv4JTc3PA4YTEDdxACXr3JwmKEPDKQ/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                                            <a href="https://drive.google.com/file/d/110puMW65rWBHfeaGy1nZvi2tNpIjbHBk/view?usp=sharing" target="_blank" rel="noopener noreferrer">
                                                 Abrir vídeo
                                             </a>
                                         </div>
                                     </details>
                                 </div>
                                 <div id="choice-buttons" class="choice-buttons hidden">
-                                    <button class="pill-button red" id="truth-pill">
-                                        <span class="pill-icon">💊</span>
-                                        Contar la verdad
-                                    </button>
                                     <button class="pill-button blue" id="medicine-pill">
                                         <span class="pill-icon">💊</span>
                                         Publicitar la pastilla
+                                    </button>
+                                    <button class="pill-button red" id="truth-pill">
+                                        <span class="pill-icon">💊</span>
+                                        Contar la verdad
                                     </button>
                                 </div>
                             </div>
@@ -123,3 +142,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
