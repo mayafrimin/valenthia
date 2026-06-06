@@ -2,7 +2,7 @@
 const REQUIRED_EMOTIONS = ['alegria', 'tristeza', 'miedo', 'rabia', 'amor', 'sorpresa'];
 
 const SPECIAL_NEWS_ANSWER_HASHES = [
-    'f5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b',
+    '6f4b6612125fb3a0daecd2799dfd6c9c299424fd920f9b308110a2c1fbd8f443',
     'dbb1ded63bc70732626c5dfe6c7f50ced3d560e970f30b15335ac290358748f6',
     'd80eae6e96d148b3b2abbbc6760077b66c4ea071f847dab573d507a32c4d99a5',
     '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce',
